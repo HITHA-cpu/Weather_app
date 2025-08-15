@@ -1,0 +1,182 @@
+body {
+    font-family: 'Times New Roman', Times, serif;
+    background: #f3f6fa;
+    color: #222;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #223366;
+    color: #fff;
+    padding: 24px 0 10px 0;
+    text-align: center;
+    margin-bottom: 0;
+    width: 100%;
+    position: fixed;      /* Make header fixed */
+    top: 0;               /* Stick at top */
+    left: 0;
+    z-index: 999;         /* On top of all */
+    box-shadow: 0 2px 12px rgba(50, 60, 120, 0.08);  /* Subtle shadow */
+    animation: fadeIn 0.8s ease;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.6rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+nav {
+    text-align: center;
+    margin-top: 10px;
+}
+
+nav a {
+    color: #aaddff;
+    text-decoration: none;
+    margin-right: 22px;
+    font-weight: 500;
+    font-size: 1.07em;
+    transition: color 0.18s;
+}
+
+nav a:hover {
+    text-decoration: underline;
+    color: #fff;
+}
+
+main {
+    max-width: 600px;
+    margin: 100px auto 0 auto; /* Add top margin to avoid overlap with fixed header */
+    padding: 0 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 18px 0 20px 0;
+    width: 100%;
+}
+
+input[type="text"] {
+    padding: 8px;
+    width: 220px;
+    border: 1px solid #ccd;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    font-size: 1.1em;
+}
+
+button {
+    padding: 8px 18px;
+    border: none;
+    background: #4da6ff;
+    border-radius: 0 5px 5px 0;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    margin-left: -4px;
+}
+
+button:hover {
+    background: #223366;
+    transform: scale(1.08);
+    box-shadow: 0 2px 8px rgba(80,120,200,0.16);
+}
+
+.error {
+    color: #b22222;
+    background: #ffebeb;
+    border: 1px solid #ffbcbc;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+
+.weather-block {
+    background: #fff;
+    text-align: center;
+    display: inline-block;
+    padding: 22px 38px 22px 22px;
+    border-radius: 14px;
+    box-shadow: 0 5px 24px rgba(40,60,120,0.12);
+    margin: 22px 0 0 0;
+    animation: fadeIn 1s ease;
+}
+
+.weather-block img {
+    height: 90px;
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h2, h3 {
+    text-align: center;
+}
+
+footer {
+    background: #223366;
+    text-align: center;
+    color: #dbe7f7;
+    padding: 18px 0 10px 0;
+    font-size: 1.1em;
+    margin-top: 45px;
+    letter-spacing: 0.5px;
+}
+
+/* YouTube videos styling */
+.videos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+}
+
+.video-card {
+    background: #fafaff;
+    border-radius: 10px;
+    box-shadow: 0 3px 9px rgba(0,0,0,0.05);
+    margin: 6px 0;
+    padding: 6px 8px 10px 8px;
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.2s, transform 0.18s;
+}
+
+.video-card:hover {
+    box-shadow: 0 6px 15px rgba(40,60,160,0.14);
+    transform: translateY(-7px) scale(1.05);
+}
+
+.video-card img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 6px;
+}
+
+.video-title {
+    font-size: 1em;
+    color: #223366;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2em;
+}
+
+/* FadeIn keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px);}
+    to   { opacity: 1; transform: translateY(0);}
+}

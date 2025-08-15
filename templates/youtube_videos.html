@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>YouTube Videos for {{ location }}</h2>
+{% if videos %}
+    <div class="videos">
+    {% for video in videos %}
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v={{ video.video_id }}" target="_blank">
+                <img src="{{ video.thumbnail }}" alt="Thumbnail for {{ video.title }}">
+                <div class="video-title">{{ video.title }}</div>
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+    <p>No videos found for this location.</p>
+{% endif %}
+{% endblock %}

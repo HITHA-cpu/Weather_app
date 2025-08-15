@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Enter Location to Get Current Weather</h2>
+<form method="post">
+    <input type="text" name="location" placeholder="City, Zip Code, etc.">
+    <button type="submit">Get Weather</button>
+</form>
+
+{% if error %}
+    <div class="error">{{ error }}</div>
+{% endif %}
+
+{% if weather %}
+    <div class="weather-block">
+        <h3>Weather for {{ weather.location }}</h3>
+        <p>
+            <b>Temperature:</b> {{ weather.temperature }} &deg;C<br>
+            <b>Description:</b> {{ weather.description }}<br>
+            <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@4x.png" alt="weather icon" />
+        </p>
+    </div>
+{% endif %}
+{% endblock %}

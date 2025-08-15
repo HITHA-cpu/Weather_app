@@ -1,0 +1,8 @@
+__pycache__/
+.env
+weather.db
+*.pyc
+*.pyo
+instance/
+.env.*
+.DS_Store
