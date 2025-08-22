@@ -69,7 +69,7 @@ def home():
                         'location': f"{data['name']}, {data['sys']['country']}",
                         'temperature': data['main']['temp'],
                         'description': data['weather'][0]['description'],
-                        'icon': data['weather']['icon']
+                        'icon': data['weather'][0]['icon']
                     }
 
                     # --- YouTube API (only if weather is valid) ---
