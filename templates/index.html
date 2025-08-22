@@ -3,7 +3,7 @@
 {% block content %}
 <h2>Enter Location to Get Current Weather</h2>
 <form method="post">
-    <input type="text" name="location" placeholder="City, Zip Code, etc.">
+    <input type="text" name="location" placeholder="City, Zip Code, etc." required>
     <button type="submit">Get Weather</button>
 </form>
 
@@ -26,7 +26,7 @@
         <div class="videos">
             {% for video in videos %}
                 <div class="video-card">
-                    <a href="https://www.youtube.com/watch?v={{ video.video_id }}" target="_blank">
+                    <a href="https://www.youtube.com/watch?v={{ video.video_id }}" target="_blank" rel="noopener noreferrer">
                         <img src="{{ video.thumbnail }}" alt="Thumbnail for {{ video.title }}">
                         <div class="video-title">{{ video.title }}</div>
                     </a>

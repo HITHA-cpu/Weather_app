@@ -8,19 +8,24 @@ from datetime import datetime
 import pandas as pd
 from fpdf import FPDF
 
+
 # Load environment variables
 load_dotenv()
+
 
 # Flask app and API initialization
 app = Flask(__name__)
 api = Api(app)
 
+
 # API keys from environment
 WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
+
 # Database name
 DB_NAME = 'weather.db'
+
 
 # Database initialization
 def init_db():
@@ -35,47 +40,16 @@ def init_db():
         ''')
 init_db()
 
+
 # --- ROUTES ---
 
-# Home Route
+
+# Home Route (merged weather + YouTube)
 @app.route('/', methods=['GET', 'POST'])
 def home():
     weather = None
     error = None
-    if request.method == 'POST':
-        location = request.form.get('location')
-        if not location:
-            error = "Please enter a location!"
-        else:
-            try:
-                weather_url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&appid={WEATHER_API_KEY}&units=metric"
-                res = requests.get(weather_url)
-                data = res.json()
-                if data.get('cod') != 200:
-                    error = data.get('message', 'Error fetching weather')
-                else:
-                    weather = {
-                        'location': f"{data['name']}, {data['sys']['country']}",
-                        'temperature': data['main']['temp'],
-                        'description': data['weather'][0]['description'],
-                        'icon': data['weather'][0]['icon']
-                    }
-            except Exception as e:
-                error = f"Error: {str(e)}"
-
-    return render_template('index.html', weather=weather, error=error)
-
-# Info Page
-@app.route('/info')
-def info():
-    return render_template('info.html')
-
-# YouTube Videos Route
-@app.route('/', methods=['GET', 'POST'])
-def home():
-    weather = None
-    error = None
-    videos = []  # 👈 add this
+    videos = []
 
     if request.method == 'POST':
         location = request.form.get('location')
@@ -87,6 +61,7 @@ def home():
                 weather_url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&appid={WEATHER_API_KEY}&units=metric"
                 res = requests.get(weather_url)
                 data = res.json()
+                
                 if data.get('cod') != 200:
                     error = data.get('message', 'Error fetching weather')
                 else:
@@ -94,7 +69,7 @@ def home():
                         'location': f"{data['name']}, {data['sys']['country']}",
                         'temperature': data['main']['temp'],
                         'description': data['weather'][0]['description'],
-                        'icon': data['weather'][0]['icon']
+                        'icon': data['weather']['icon']
                     }
 
                     # --- YouTube API (only if weather is valid) ---
@@ -119,6 +94,12 @@ def home():
                 error = f"Error: {str(e)}"
 
     return render_template('index.html', weather=weather, error=error, videos=videos)
+
+
+# Info Page
+@app.route('/info')
+def info():
+    return render_template('info.html')
 
 
 # --- CRUD API CLASS ---
@@ -185,10 +166,13 @@ class WeatherData(Resource):
             conn.commit()
             return {"message": "Record deleted"}, 200
 
+
 # Register CRUD resource
 api.add_resource(WeatherData, '/api/weather', '/api/weather/<int:record_id>')
 
+
 # --- EXPORT ROUTES ---
+
 
 # Export JSON or CSV
 @app.route('/export')
@@ -206,6 +190,7 @@ def export():
         )
     else:
         return df.to_json(orient='records')
+
 
 # Export as PDF
 @app.route('/export/pdf')
@@ -227,6 +212,7 @@ def export_pdf():
 
     pdf_output = pdf.output(dest='S').encode('latin-1')
     return Response(pdf_output, mimetype='application/pdf', headers={"Content-Disposition": "attachment;filename=weather_data.pdf"})
+
 
 # Export as Markdown
 @app.route('/export/markdown')
