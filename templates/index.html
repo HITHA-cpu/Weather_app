@@ -20,5 +20,21 @@
             <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@4x.png" alt="weather icon" />
         </p>
     </div>
+
+    <h3>Related YouTube Videos</h3>
+    {% if videos %}
+        <div class="videos">
+            {% for video in videos %}
+                <div class="video-card">
+                    <a href="https://www.youtube.com/watch?v={{ video.video_id }}" target="_blank">
+                        <img src="{{ video.thumbnail }}" alt="Thumbnail for {{ video.title }}">
+                        <div class="video-title">{{ video.title }}</div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No related videos found for this city.</p>
+    {% endif %}
 {% endif %}
 {% endblock %}

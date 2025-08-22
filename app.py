@@ -71,32 +71,55 @@ def info():
     return render_template('info.html')
 
 # YouTube Videos Route
-@app.route('/youtube_videos', methods=['GET'])
-def youtube_videos():
-    location = request.args.get('location')
-    if not location:
-        return "Location not specified", 400
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    weather = None
+    error = None
+    videos = []  # 👈 add this
 
-    search_url = "https://www.googleapis.com/youtube/v3/search"
-    params = {
-        'part': 'snippet',
-        'q': location,
-        'key': YOUTUBE_API_KEY,
-        'maxResults': 5,
-        'type': 'video'
-    }
-    response = requests.get(search_url, params=params)
-    results = response.json().get('items', [])
+    if request.method == 'POST':
+        location = request.form.get('location')
+        if not location:
+            error = "Please enter a location!"
+        else:
+            try:
+                # --- Weather API ---
+                weather_url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&appid={WEATHER_API_KEY}&units=metric"
+                res = requests.get(weather_url)
+                data = res.json()
+                if data.get('cod') != 200:
+                    error = data.get('message', 'Error fetching weather')
+                else:
+                    weather = {
+                        'location': f"{data['name']}, {data['sys']['country']}",
+                        'temperature': data['main']['temp'],
+                        'description': data['weather'][0]['description'],
+                        'icon': data['weather'][0]['icon']
+                    }
 
-    videos = []
-    for item in results:
-        videos.append({
-            'title': item['snippet']['title'],
-            'thumbnail': item['snippet']['thumbnails']['medium']['url'],
-            'video_id': item['id']['videoId']
-        })
+                    # --- YouTube API (only if weather is valid) ---
+                    search_url = "https://www.googleapis.com/youtube/v3/search"
+                    params = {
+                        'part': 'snippet',
+                        'q': data['name'],   # city name only
+                        'key': YOUTUBE_API_KEY,
+                        'maxResults': 5,
+                        'type': 'video'
+                    }
+                    yt_res = requests.get(search_url, params=params)
+                    yt_data = yt_res.json().get('items', [])
+                    for item in yt_data:
+                        videos.append({
+                            'title': item['snippet']['title'],
+                            'thumbnail': item['snippet']['thumbnails']['medium']['url'],
+                            'video_id': item['id']['videoId']
+                        })
 
-    return render_template('youtube_videos.html', videos=videos, location=location)
+            except Exception as e:
+                error = f"Error: {str(e)}"
+
+    return render_template('index.html', weather=weather, error=error, videos=videos)
+
 
 # --- CRUD API CLASS ---
 class WeatherData(Resource):
