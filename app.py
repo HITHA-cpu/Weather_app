@@ -76,11 +76,12 @@ def home():
                     search_url = "https://www.googleapis.com/youtube/v3/search"
                     params = {
                         'part': 'snippet',
-                        'q': data['name'],   # city name only
+                        'q': f"{data['name']} weather OR climate",  # combines city with weather/climate
                         'key': YOUTUBE_API_KEY,
                         'maxResults': 5,
                         'type': 'video'
                     }
+
                     yt_res = requests.get(search_url, params=params)
                     yt_data = yt_res.json().get('items', [])
                     for item in yt_data:
